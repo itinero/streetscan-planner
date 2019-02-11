@@ -26,16 +26,42 @@ namespace StreetScan.Planner
 
             if (args == null || args.Length < 1)
             { // show help.
-
+                Log.Fatal("Could not parse arguments");
+                ShowHelp();
+                return;
+            }
+            if (args[0] == "help")
+            {
+                ShowHelp();
                 return;
             }
             if (args[0] == "test")
             {
                 args = new[]
                 {
-                    "test.csv",
-                    "test.gpx"
+                    "test.csv"
                 };
+                Log.Information($"Running test using: {args[0]}");
+            }
+
+            if (!string.IsNullOrEmpty(args[0]))
+            { // check if the input exists.
+                if (!File.Exists(args[0]))
+                {
+                    Log.Fatal($"Input file not found: {args[0]}");
+                    ShowHelp();
+                    return;
+                }
+
+                if (args.Length == 1)
+                {
+                    args = new[]
+                    {
+                        args[0],
+                        args[0] + ".gpx"
+                    };
+                    Log.Information($"No second argument found, using output: {args[1]}");
+                }
             }
             
             // enable logging.
@@ -157,6 +183,14 @@ namespace StreetScan.Planner
                     GpxWriter.Write(wr, null, new GpxMetadata("StreetScan"), features.Features, null);
                 }
             }
+        }
+
+        private static void ShowHelp()
+        {
+            Log.Information($"Usage: arg1 arg2");
+            Log.Information($"- arg1: input.csv");
+            Log.Information($"- arg2: (optional) output.gpx");
+            Log.Information($"Example arguments: {Path.Combine("path", "to", "input.csv")} {Path.Combine("path", "to", "output.gpx")}");
         }
     }
 }
