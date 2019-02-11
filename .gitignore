@@ -50,3 +50,4 @@ Candidate*.html
 
 **/*.gpx
 **/*.gpx.geojson
+!docs/**
