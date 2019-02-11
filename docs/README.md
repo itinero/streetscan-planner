@@ -26,7 +26,7 @@ This is a cross-platform tools avaible for linux, windows and macos.
 
 Download the latest release here:
 
-[https://github.com/itinero/streetscan-planner/releases](https://github.com/itinero/streetscan-planner/releases)
+[https://github.com/itinero/streetscan-planner/releases/latest](https://github.com/itinero/streetscan-planner/releases/latest)
 
 Make sure you choose the correct download for your platform: 
 
