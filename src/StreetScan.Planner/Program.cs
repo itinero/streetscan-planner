@@ -23,16 +23,21 @@ namespace StreetScan.Planner
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
-//#if DEBUG
-            if (args == null || args.Length == 0)
+
+            if (args == null || args.Length < 1)
+            { // show help.
+
+                return;
+            }
+            if (args[0] == "test")
             {
                 args = new[]
                 {
-                    "2275-small.csv",
-                    "output.gpx"
+                    "test.csv",
+                    "test.gpx"
                 };
             }
-//#endif
+            
             // enable logging.
             OsmSharp.Logging.Logger.LogAction = (origin, level, message, parameters) =>
             {
