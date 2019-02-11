@@ -37,6 +37,10 @@ namespace StreetScan.Planner
             if (routerDb == null)
             {
                 Log.Information("Building routerdb...");
+
+                // download data if needed.
+                Download.DownloadAll();
+                
                 routerDb = new RouterDb();
                 using (var stream = File.OpenRead(Download.Local))
                 {

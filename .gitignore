@@ -48,3 +48,5 @@ Candidate*.md
 Candidate*.csv
 Candidate*.html
 
+**/*.gpx
+**/*.gpx.geojson
