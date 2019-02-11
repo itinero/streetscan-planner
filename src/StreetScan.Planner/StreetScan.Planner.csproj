@@ -38,6 +38,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyVersion.cs">
+      <Link>SharedAssemblyVersion.cs</Link>
+    </Compile>
+  </ItemGroup>
+
   <!--<ItemGroup>-->
     <!--<Reference Include="Itinero, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">-->
       <!--<HintPath>..\..\..\..\..\routing\src\Itinero.IO.Osm\bin\Debug\netstandard2.0\Itinero.dll</HintPath>-->
