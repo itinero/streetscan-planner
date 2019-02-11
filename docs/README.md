@@ -28,11 +28,11 @@ Download the latest release here:
 
 [https://github.com/itinero/streetscan-planner/releases](https://github.com/itinero/streetscan-planner/releases)
 
-Make sure you choose the correct download for your platform:
+Make sure you choose the correct download for your platform: 
 
-- Windows: 
-- Linux:
-- Macos: 
+- Windows: `win10-x65`
+- Linux: `linux-x64`
+- Macos: `osx-64` 
 
 You get a zip-archive, extract it to an appropriate directory and that's it.
 
