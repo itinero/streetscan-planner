@@ -16,7 +16,7 @@ This tool:
 
 The result is something like this:
 
-![result](result.png "Resulting route")
+![result](result-wechelderzande.png "Resulting route")
 
 ### Usage
 

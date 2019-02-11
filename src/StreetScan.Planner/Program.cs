@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -138,7 +139,15 @@ namespace StreetScan.Planner
             }
             
             // read the locations.
-            var locations = CSV.CSVReader.Read(args[0]).Select(r => new Coordinate((float)r.Latitude, (float)r.Longitude)).ToArray();
+            Coordinate[] locations;
+            if (inputFile.ToLowerInvariant().EndsWith(".geojson"))
+            {
+                locations = GeoJson.GeoJsonReader1.Read(args[0]).ToArray();
+            }
+            else
+            {
+                locations = CSV.CSVReader.Read(args[0]).Select(r => new Coordinate((float)r.Latitude, (float)r.Longitude)).ToArray();
+            }
             
             // build routerdb if needed.
             var routerDb = RouterDbBuilder.BuildRouterDb();

@@ -19,5 +19,5 @@ This tool:
 
 The result is something like this:
 
-![result](docs/result.png "Resulting route")
+![result](docs/result-kortemark.png "Resulting route")
 
