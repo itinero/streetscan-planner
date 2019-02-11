@@ -1,7 +1,7 @@
 StreetScan
 ==========
 
-This is the documentation on the street scan tool.
+This is the documentation of the street scan tool.
 
 ### Overview
 
