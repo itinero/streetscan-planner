@@ -62,7 +62,9 @@ This means that the tool hasn't found a local routing network. It will:
 
 Running the tool is best done after running the test above to make sure the routing network is properly initialized and things are working as they should.
 
-You can start to create your own input files based on the `test.csv` file. The contents of the file look as follows:
+You can start to create your own input files based on the `test.csv` file. Make sure your CSV is also **comma-seperated and use `.` as a decimal seperator.**
+
+The contents of the file look as follows:
 
 | PKANCODE | COMMUNE_NL | STREET_NL     | HUISNR | LAT           | LON           | 
 |----------|------------|---------------|--------|---------------|---------------| 
@@ -82,7 +84,7 @@ You can start to create your own input files based on the `test.csv` file. The c
 | 2275     | Lille      | Nieuwstraat   | 34A    | 51.2619512316 | 4.79206247836 | 
 | ...      | ...        | ...           | ...    | ...           | ...           | 
 
-The only columns actually used here are `LAT` and `LON`. The tool will that the first line as it's starting location and generate an optimized route along all the locations that come after.
+The only columns actually used here are `LAT` and `LON`. The tool will take the first line as it's starting location and generate an optimized route along all the locations that come after.
 
 You can run the tool with custom input as follows:
 
