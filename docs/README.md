@@ -18,7 +18,7 @@ The result is something like this:
 
 ![result](result-wechelderzande.png "Resulting route")
 
-### Usage
+### Manual
 
 This is a cross-platform tools avaible for linux, windows and macos.
 
@@ -58,9 +58,16 @@ This means that the tool hasn't found a local routing network. It will:
 
 **This can take up to 20mins** but needs to run only once. After the network has been downloaded and built you should see an `output.gpx` file. That's the result of processing the `test.csv` input file.
 
-#### Running
+#### Usage
 
-Running the tool is best done after running the test above to make sure the routing network is properly initialized and things are working as they should.
+Running the tool is best done after running the test above to make sure the routing network is properly initialized and things are working as they should. 
+
+The tool can take two types of input files:
+
+- CSV: A comma-separated file with all locations. The first one is taken as the starting point.
+- GeoJSON: A GeoJson file with all locations as Point geometries. The first is taken as the starting point.
+
+##### CSV
 
 You can start to create your own input files based on the `test.csv` file. Make sure your CSV is also **comma-seperated and use `.` as a decimal seperator.**
 
@@ -86,6 +93,12 @@ The contents of the file look as follows:
 
 The only columns actually used here are `LAT` and `LON`. The tool will take the first line as it's starting location and generate an optimized route along all the locations that come after.
 
+###### GeoJson
+
+This tool also takes GeoJSON files in WGS84 projection. It will read all point geometries from the file and use them as locations. The first point will be taken as the starting point.
+
+###### Running
+
 You can run the tool with custom input as follows:
 
 - Linux/macos: `.\StreetScan.Planner locations.csv`
@@ -95,4 +108,3 @@ This will generate two output files:
 
 - `locations.csv.gpx` : The resulting GPX file.
 - `locations.csv.gpx.geojson` : The same but in GeoJSON (easier to use in GIS tools).
-

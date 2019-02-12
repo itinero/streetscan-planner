@@ -24,6 +24,13 @@ namespace StreetScan.Planner
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
+            
+#if DEBUG
+            if (args == null || args.Length < 1)
+            {
+                args = new[] {"test"};
+            }
+#endif
 
             if (args == null || args.Length < 1)
             { // show help.
