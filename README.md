@@ -1,4 +1,4 @@
-# straatscan-planner
+# streetscan-planner
 
 [![Build status](https://build.anyways.eu/app/rest/builds/buildType:(id:Itinero_Projects_StreetscanPlanner)/statusIcon)](https://build.anyways.eu/viewType.html?buildTypeId=Itinero_Projects_StreetscanPlanner)  
 
