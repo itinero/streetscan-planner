@@ -9,20 +9,21 @@ namespace StreetScan.Planner
 {
     internal static class RouterDbBuilder
     {
-        internal const string LocalRouterDb = "belgium.routerdb";
+        //internal const string LocalRouterDb = "belgium.routerdb";
         
         /// <summary>
         /// Builds the belgium routerdb if it cannot be loaded.
         /// </summary>
         /// <returns></returns>
-        public static RouterDb BuildRouterDb()
+        public static RouterDb BuildRouterDb(string profileName)
         {
+            var localRouterDb = $"belgium.{profileName}.routerdb";
             RouterDb routerDb = null;
             try
             {
-                if (File.Exists(LocalRouterDb))
+                if (File.Exists(localRouterDb))
                 {
-                    using (var stream = File.OpenRead(LocalRouterDb))
+                    using (var stream = File.OpenRead(localRouterDb))
                     {
                         routerDb = RouterDb.Deserialize(stream);
                     }
@@ -48,10 +49,12 @@ namespace StreetScan.Planner
                 }
             }
 
-            if (!routerDb.HasContractedFor(Vehicle.Car.Fastest()))
+            var profile = routerDb.GetSupportedProfile(profileName);
+            if (!routerDb.HasContractedFor(profile))
             {
-                routerDb.AddContracted(Vehicle.Car.Fastest());
-                using (var stream = File.Open(LocalRouterDb, FileMode.Create))
+                Log.Warning($"Routerdb doesn't have a contracted graph for {profile.FullName}...");
+                routerDb.AddContracted(profile);
+                using (var stream = File.Open(localRouterDb, FileMode.Create))
                 {
                     routerDb.Serialize(stream);
                 }

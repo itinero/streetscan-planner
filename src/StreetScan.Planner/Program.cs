@@ -47,7 +47,8 @@ namespace StreetScan.Planner
             {
                 args = new[]
                 {
-                    "test.csv"
+                    "test.csv",
+                    "test.gpx"
                 };
                 Log.Information($"Running test using: {args[0]}");
             }
@@ -144,6 +145,14 @@ namespace StreetScan.Planner
                 Log.Fatal($"Output path {outputPath} not found!");
                 return;
             }
+
+            var profileName = "car.shortest";
+            if (args.Length >= 3 &&
+                args[2] == "fastest")
+            { // apply fastest only on request.
+                profileName = "car";
+            }
+            Log.Information($"Using profile '{profileName}'");
             
             // read the locations.
             Coordinate[] locations;
@@ -156,10 +165,10 @@ namespace StreetScan.Planner
                 locations = CSV.CSVReader.Read(args[0]).Select(r => new Coordinate((float)r.Latitude, (float)r.Longitude)).ToArray();
             }
             
-            // build routerdb if needed.
-            var routerDb = RouterDbBuilder.BuildRouterDb();
+            // build router db if needed.
+            var routerDb = RouterDbBuilder.BuildRouterDb(profileName);
             
-            // cut out a part of the routerdb.
+            // cut out a part of the router db.
             var box = locations.BuildBoundingBox().Value.Resize(0.01f);
             routerDb = routerDb.ExtractArea((l) => box.Overlaps(l.Latitude, l.Longitude));
             
@@ -169,7 +178,8 @@ namespace StreetScan.Planner
                 (ByEdgeDirectedModelMapper.Name, ByEdgeDirectedModelMapper.TryMap))));
             
             // run the optimization.
-            var route = optimizer.Optimize("car", locations, out _, 0, 0, turnPenalty: 60);
+            var profile = routerDb.GetSupportedProfile(profileName);
+            var route = optimizer.Optimize(profile.FullName, locations, out _, 0, 0, turnPenalty: 60);
             if (route.IsError)
             {
                 Log.Fatal("Calculating route failed {@errorMessage}", route.ErrorMessage);

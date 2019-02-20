@@ -18,7 +18,7 @@
       <Version>1.4.0-pre92</Version>
     </PackageReference>
     <PackageReference Include="Itinero.Optimization">
-      <Version>1.0.0-pre002</Version>
+      <Version>1.0.0-pre003</Version>
     </PackageReference>
     <PackageReference Include="NetTopologySuite.IO.GeoJSON">
       <Version>1.15.0</Version>
@@ -52,16 +52,4 @@
     </Compile>
   </ItemGroup>
 
-  <!--<ItemGroup>-->
-    <!--<Reference Include="Itinero, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">-->
-      <!--<HintPath>..\..\..\..\..\routing\src\Itinero.IO.Osm\bin\Debug\netstandard2.0\Itinero.dll</HintPath>-->
-    <!--</Reference>-->
-    <!--<Reference Include="Itinero.IO.Osm, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null">-->
-      <!--<HintPath>..\..\..\..\..\routing\src\Itinero.IO.Osm\bin\Debug\netstandard2.0\Itinero.IO.Osm.dll</HintPath>-->
-    <!--</Reference>-->
-    <!--<Reference Include="Itinero.Optimization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">-->
-      <!--<HintPath>..\..\..\optimization\src\Itinero.Optimization\bin\Debug\netstandard2.0\Itinero.Optimization.dll</HintPath>-->
-    <!--</Reference>-->
-  <!--</ItemGroup>-->
-  
 </Project>
