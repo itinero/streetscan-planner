@@ -47,7 +47,7 @@ namespace StreetScan.Planner
             {
                 args = new[]
                 {
-                    "test.csv",
+                    "test.geojson",
                     "test.gpx"
                 };
                 Log.Information($"Running test using: {args[0]}");
