@@ -108,3 +108,12 @@ This will generate two output files:
 
 - `locations.csv.gpx` : The resulting GPX file.
 - `locations.csv.gpx.geojson` : The same but in GeoJSON (easier to use in GIS tools).
+
+**vehicle profiles**
+
+You can also specify what vehicle profile to use:
+
+- Linux/macos: `.\StreetScan.Planner locations.csv route.gpx fastest`
+- Windows: `\StreetScan.Planner.exe locations.csv route.gpx fastest`
+
+By default the `shortest` profile will be used, this ignores speed completely. The `fastest` profile takes into account speed and road classifications.
