@@ -175,7 +175,7 @@ namespace StreetScan.Planner
             // create and configure the optimizer.
             var router = new Router(routerDb);
             var optimizer = router.Optimizer(new OptimizerConfiguration(modelMapperRegistry: new ModelMapperRegistry(
-                (ByEdgeDirectedModelMapper.Name, ByEdgeDirectedModelMapper.TryMap))));
+                new ByEdgeDirectedModelMapper(1000))));
             
             // run the optimization.
             var profile = routerDb.GetSupportedProfile(profileName);
