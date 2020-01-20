@@ -44,20 +44,20 @@
   </layer-tree-group>
   <snapping-settings mode="1" tolerance="0" type="1" intersection-snapping="0" unit="2" enabled="0">
     <individual-layer-settings>
-      <layer-setting tolerance="12" units="1" type="1" id="test_test_csv_gpx_6ba4e4e9_e223_42fc_8f61_ba4b92560abd" enabled="0"/>
       <layer-setting tolerance="12" units="1" type="1" id="test_test_gpx_fa78c9be_79b9_4c90_9617_56cc72ba4ba3" enabled="0"/>
-      <layer-setting tolerance="12" units="1" type="1" id="test_test_gpx_4107e14e_5b99_4fe8_9416_19b3834196f6" enabled="0"/>
+      <layer-setting tolerance="12" units="1" type="1" id="test_test_csv_gpx_6ba4e4e9_e223_42fc_8f61_ba4b92560abd" enabled="0"/>
       <layer-setting tolerance="12" units="1" type="1" id="test_test_csv_gpx_01195487_c6db_4e8b_851e_13407b13e54e" enabled="0"/>
+      <layer-setting tolerance="12" units="1" type="1" id="test_test_gpx_4107e14e_5b99_4fe8_9416_19b3834196f6" enabled="0"/>
     </individual-layer-settings>
   </snapping-settings>
   <relations/>
   <mapcanvas annotationsVisible="1" name="theMapCanvas">
     <units>meters</units>
     <extent>
-      <xmin>334295.00339213624829426</xmin>
-      <ymin>6662511.2606130400672555</ymin>
-      <xmax>341607.70875976147362962</xmax>
-      <ymax>6671098.5508705684915185</ymax>
+      <xmin>534084.39791710639838129</xmin>
+      <ymin>6661085.50026754289865494</ymin>
+      <xmax>548506.89548453653696924</xmax>
+      <ymax>6675863.96651626378297806</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -307,7 +307,7 @@
               <prop k="joinstyle" v="bevel"/>
               <prop k="line_color" v="1,255,43,255"/>
               <prop k="line_style" v="solid"/>
-              <prop k="line_width" v="0.46"/>
+              <prop k="line_width" v="0.26"/>
               <prop k="line_width_unit" v="MM"/>
               <prop k="offset" v="0"/>
               <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
@@ -339,7 +339,6 @@
       <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
         <DiagramCategory penWidth="0" height="15" backgroundAlpha="255" minScaleDenominator="0" labelPlacementMethod="XHeight" barWidth="5" opacity="1" backgroundColor="#ffffff" scaleBasedVisibility="0" diagramOrientation="Up" maxScaleDenominator="1e+08" sizeType="MM" penColor="#000000" lineSizeType="MM" minimumSize="0" penAlpha="255" rotationOffset="270" sizeScale="3x:0,0,0,0,0,0" lineSizeScale="3x:0,0,0,0,0,0" width="15" scaleDependency="Area" enabled="0">
           <fontProperties style="" description="Ubuntu,11,-1,5,50,0,0,0,0,0"/>
-          <attribute field="" color="#000000" label=""/>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings placement="2" showAll="1" priority="0" zIndex="0" dist="0" linePlacementFlags="18" obstacle="0">
@@ -1461,7 +1460,6 @@ def my_form_open(dialog, layer, feature):
       <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
         <DiagramCategory penWidth="0" height="15" backgroundAlpha="255" minScaleDenominator="0" labelPlacementMethod="XHeight" barWidth="5" opacity="1" backgroundColor="#ffffff" scaleBasedVisibility="0" diagramOrientation="Up" maxScaleDenominator="1e+08" sizeType="MM" penColor="#000000" lineSizeType="MM" minimumSize="0" penAlpha="255" rotationOffset="270" sizeScale="3x:0,0,0,0,0,0" lineSizeScale="3x:0,0,0,0,0,0" width="15" scaleDependency="Area" enabled="0">
           <fontProperties style="" description="Ubuntu,11,-1,5,50,0,0,0,0,0"/>
-          <attribute field="" color="#000000" label=""/>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings placement="0" showAll="1" priority="0" zIndex="0" dist="0" linePlacementFlags="18" obstacle="0">

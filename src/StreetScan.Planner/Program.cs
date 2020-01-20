@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 using Itinero;
@@ -13,11 +14,12 @@ using Itinero.Optimization.Models.Mapping.Directed.Simplified;
 using NetTopologySuite.IO;
 using Serilog;
 
+[assembly: InternalsVisibleTo("StreetScan.Planner.Tests.Functional")]
 namespace StreetScan.Planner
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        internal static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()

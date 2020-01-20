@@ -8,11 +8,29 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreetScan.Planner", "src\StreetScan.Planner\StreetScan.Planner.csproj", "{D6810BF8-946D-41F2-9DAE-1AAE62D2A4BE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{C6BBFDC1-459E-4731-BA25-5F914FE2D0D8}"
-ProjectSection(SolutionItems) = preProject
-	README.md = README.md
-	.gitignore = .gitignore
-	SharedAssemblyVersion.cs = SharedAssemblyVersion.cs
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		.gitignore = .gitignore
+		SharedAssemblyVersion.cs = SharedAssemblyVersion.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{86ED8D3A-F958-41B2-A173-216979CB5776}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Adresptn_Kortemark.geojson = docs\Adresptn_Kortemark.geojson
+		docs\Adresptn_Kortemark.geojson.gpx = docs\Adresptn_Kortemark.geojson.gpx
+		docs\Adresptn_Kortemark.geojson.gpx.geojson = docs\Adresptn_Kortemark.geojson.gpx.geojson
+		docs\Adresptn_Pervijze.geojson = docs\Adresptn_Pervijze.geojson
+		docs\Adresptn_Pervijze.geojson.gpx = docs\Adresptn_Pervijze.geojson.gpx
+		docs\Adresptn_Pervijze.geojson.gpx.geojson = docs\Adresptn_Pervijze.geojson.gpx.geojson
+		docs\README.md = docs\README.md
+		docs\result-kortemark.png = docs\result-kortemark.png
+		docs\result-pervijze.png = docs\result-pervijze.png
+		docs\result-wechelderzande.png = docs\result-wechelderzande.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9E8F718C-0BF6-4C72-B379-666291FBBDBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreetScan.Planner.Tests.Functional", "test\StreetScan.Planner.Tests.Functional\StreetScan.Planner.Tests.Functional.csproj", "{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +57,21 @@ Global
 		{D6810BF8-946D-41F2-9DAE-1AAE62D2A4BE}.Release|x64.Build.0 = Release|Any CPU
 		{D6810BF8-946D-41F2-9DAE-1AAE62D2A4BE}.Release|x86.ActiveCfg = Release|Any CPU
 		{D6810BF8-946D-41F2-9DAE-1AAE62D2A4BE}.Release|x86.Build.0 = Release|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Debug|x64.Build.0 = Debug|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Debug|x86.Build.0 = Debug|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Release|x64.ActiveCfg = Release|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Release|x64.Build.0 = Release|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Release|x86.ActiveCfg = Release|Any CPU
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D6810BF8-946D-41F2-9DAE-1AAE62D2A4BE} = {D72E7EB2-7547-4483-B999-0D8147E0D4B6}
+		{FFB9D6DE-02DD-496B-9271-0AEC5CE7CEF2} = {9E8F718C-0BF6-4C72-B379-666291FBBDBF}
 	EndGlobalSection
 EndGlobal
