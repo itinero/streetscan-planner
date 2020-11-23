@@ -9,7 +9,7 @@ namespace StreetScan.Planner
     /// </summary>
     internal static class Download
     {
-        internal const string PBF = "http://files.itinero.tech/data/OSM/planet/europe/belgium-latest.osm.pbf";
+        internal const string PBF = "http://planet.anyways.eu/planet/europe/belgium/belgium-latest.osm.pbf";
         internal const string Local = "belgium-latest.osm.pbf";
         
         /// <summary>
