@@ -31,7 +31,7 @@ namespace StreetScan.Planner
             if (args == null || args.Length < 1)
             {
                 args = new[] {"test"};
-                args = new[] {"test.csv", "--turn", "120"};
+                args = new[] {"test.csv", "--turn", "120", "--profile", "car"};
             }
 #endif
 
@@ -55,30 +55,10 @@ namespace StreetScan.Planner
                 };
                 Log.Information($"Running test using: {args[0]}");
             }
-
-            // if (!string.IsNullOrEmpty(args[0]))
-            // { // check if the input exists.
-            //     if (!File.Exists(args[0]))
-            //     {
-            //         Log.Fatal($"Input file not found: {args[0]}");
-            //         ShowHelp();
-            //         return;
-            //     }
-            //
-            //     if (args.Length == 1)
-            //     {
-            //         args = new[]
-            //         {
-            //             args[0],
-            //             args[0] + ".gpx"
-            //         };
-            //         Log.Warning($"No second argument found, using output: {args[1]}");
-            //     }
-            // }
             
             // parse arguments.
-            var inputFile = args[0];
-            var outputFile = inputFile + ".gpx";
+            var inputFile = new FileInfo(args[0]).FullName;
+            var outputFile = Path.Combine(Path.GetDirectoryName(inputFile), Path.GetFileNameWithoutExtension(inputFile) + ".gpx");
             var i = 1;
             var turnPenalty = 60;
             var profileName = "car.shortest";
@@ -88,7 +68,7 @@ namespace StreetScan.Planner
                     !args[i].StartsWith("--"))
                 {
                     // we assume this is the output file.
-                    outputFile = args[i];
+                    outputFile = new FileInfo(args[i]).FullName;
                     i++;
                     continue;
                 }
@@ -107,6 +87,22 @@ namespace StreetScan.Planner
                     else
                     {
                         ArgumentParsingFailed("Could not find or parse turn penalty value");
+                        return;
+                    }
+                } 
+                else if (args[i] == "--profile")
+                {
+                    i++;
+
+                    if (i < args.Length)
+                    {
+                        profileName = args[i];
+                        i++;
+                        Log.Information("Using custom profile: {ProfileName}", profileName);
+                    }
+                    else
+                    {
+                        ArgumentParsingFailed("Could not find or parse profile");
                         return;
                     }
                 }
@@ -176,26 +172,25 @@ namespace StreetScan.Planner
                 Log.Fatal("Output path {OutputPath} not found!", outputPath);
                 return;
             }
-
-            Log.Information("Using profile '{ProfileName}'", profileName);
             
             // read the locations.
             Coordinate[] locations;
             if (inputFile.ToLowerInvariant().EndsWith(".geojson"))
             {
-                locations = GeoJson.GeoJsonReader1.Read(args[0]).ToArray();
+                locations = GeoJson.GeoJsonReader1.Read(inputFile).ToArray();
             }
             else
             {
-                locations = CSV.CSVReader.Read(args[0]).Select(r => new Coordinate((float)r.Latitude, (float)r.Longitude)).ToArray();
+                locations = CSV.CSVReader.Read(inputFile).Select(r => new Coordinate((float)r.Latitude, (float)r.Longitude)).ToArray();
             }
             
-            // build router db if needed.
-            var routerDb = RouterDbBuilder.BuildRouterDb(profileName);
-            
-            // cut out a part of the router db.
+            // extract OSM data so it can later be edited.
             var box = locations.BuildBoundingBox().Value.Resize(0.01f);
-            routerDb = routerDb.ExtractArea((l) => box.Overlaps(l.Latitude, l.Longitude));
+            var osmData = RouterDbBuilder.GetOsmData(Path.GetFileNameWithoutExtension(inputFile), outputPath, box);
+            
+            // build router db if needed.
+            var routerDb = RouterDbBuilder.BuildRouterDb(osmData, profileName);
+            if (routerDb == null) return;
             
             // create and configure the optimizer.
             var router = new Router(routerDb);
@@ -210,7 +205,7 @@ namespace StreetScan.Planner
                 Log.Fatal("Calculating route failed {ErrorMessage}", route.ErrorMessage);
                 return;
             }
-            File.WriteAllText(args[1] + ".geojson", route.Value.ToGeoJson());
+            File.WriteAllText(outputFile + ".geojson", route.Value.ToGeoJson());
             
             // set a description/name on stops.
             foreach (var stop in route.Value.Stops)
@@ -226,7 +221,7 @@ namespace StreetScan.Planner
             
             // convert to GPX.
             var features = route.Value.ToFeatureCollection();
-            using var stream = File.Open(args[1], FileMode.Create);
+            using var stream = File.Open(outputFile, FileMode.Create);
             var writerSettings = new XmlWriterSettings { Encoding = Encoding.UTF8, CloseOutput = true };
             using var wr = XmlWriter.Create(stream, writerSettings);
             GpxWriter.Write(wr, null, new GpxMetadata("StreetScan"), features.Features, null);

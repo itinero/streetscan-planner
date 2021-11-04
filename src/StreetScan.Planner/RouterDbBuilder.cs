@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Itinero;
 using Itinero.IO.Osm;
+using Itinero.LocalGeo;
 using Itinero.Osm.Vehicles;
 using OsmSharp.Streams;
 using Serilog;
@@ -10,15 +11,47 @@ namespace StreetScan.Planner
 {
     internal static class RouterDbBuilder
     {
-        internal static RouterDb BuildRouterDb(string profileName, string customInputFile = null)
+        internal static string GetOsmData(string name, string outputPath, Box box)
         {
-            var localRouterDb = $"belgium.{profileName}.routerdb";
-            if (!string.IsNullOrWhiteSpace(customInputFile))
+            // generate the cutout file name.
+            var cutoutFile = new FileInfo(Path.Combine(outputPath, $"{name}.osm")).FullName;
+            
+            // if it exists, don't rebuild it, it could have been edited.
+            if (File.Exists(cutoutFile))
             {
-                localRouterDb = $"{Path.GetFileNameWithoutExtension(customInputFile)}.{profileName}.routerdb";
-                Log.Information("Using custom input file {CustomInputFile} to build or load {LocalRouterDb}",
-                    customInputFile, localRouterDb);
+                Log.Information("Using existing OSM extract: {CutoutFile}",
+                    cutoutFile);
+                return cutoutFile;
             }
+            
+            // make sure the source data has been downloaded.
+            Download.DownloadAll();
+            using var sourceDataStream = File.OpenRead(Download.Local);
+
+            // cut out the data.
+            var tempFile = "temp.osm";
+            using (var cutoutFileStream = File.Open(tempFile, FileMode.Create))
+            {
+                Log.Warning("OSM extract doesn't exist for file {Name}, creating {CutoutFile}",
+                    name, cutoutFile);
+                var source = new PBFOsmStreamSource(sourceDataStream); 
+                
+                var filtered = source.FilterBox( box.MinLon, box.MaxLat, box.MaxLon, box.MinLat, true);
+
+                var target = new XmlOsmStreamTarget(cutoutFileStream);
+                target.RegisterSource(filtered);
+                target.Initialize();
+                target.Pull();
+            }
+  
+            File.Copy(tempFile, cutoutFile);
+            return cutoutFile;
+        }
+        
+        internal static RouterDb BuildRouterDb(string osmData, string profileName)
+        {
+            var localRouterDb = $"{osmData}.{profileName}.routerdb";
+            localRouterDb = new FileInfo(localRouterDb).FullName;
             
             // try to load existing router db.
             RouterDb routerDb = null;
@@ -26,41 +59,41 @@ namespace StreetScan.Planner
             {
                 if (File.Exists(localRouterDb))
                 {
-                    using (var stream = File.OpenRead(localRouterDb))
+                    // if source file is more recent rebuild router db.
+                    if (new FileInfo(localRouterDb).LastWriteTime < new FileInfo(osmData).LastWriteTime)
                     {
-                        routerDb = RouterDb.Deserialize(stream);
+                        Log.Warning("Router db is older than source data, rebuilding");
                     }
+                    else
+                    {
+                        using (var stream = File.OpenRead(localRouterDb))
+                        {
+                            routerDb = RouterDb.Deserialize(stream);
+                        }
                     
-                    Log.Information("Using existing router db: {LocalRouterDb}",
-                        localRouterDb);
+                        Log.Information("Using existing router db: {LocalRouterDb}",
+                            localRouterDb);
+                    }
                 }
             }
             catch (Exception e)
             {
                 routerDb = null;
-                Log.Warning("Loading router db failed, rebuilding...");
+                Log.Error(e, "Loading router db failed, rebuilding...");
             }
 
             // build router db if needed.
             if (routerDb == null)
             {
-                // download data if needed.
-                var inputFile = customInputFile;
-                if (string.IsNullOrWhiteSpace(customInputFile))
-                {
-                    Download.DownloadAll();
-                    inputFile = Download.Local;
-                }
-                
                 Log.Information("Building router db from: {LocalFile}",
-                    customInputFile);
+                    osmData);
                 
                 // create new router db.
                 routerDb = new RouterDb();
-                using (var stream = File.OpenRead(inputFile))
+                using (var stream = File.OpenRead(osmData))
                 {
                     OsmStreamSource streamSource;
-                    if (Path.GetExtension(inputFile).EndsWith("pbf"))
+                    if (Path.GetExtension(osmData).EndsWith("pbf"))
                     {
                         streamSource = new PBFOsmStreamSource(stream);
                     }
@@ -68,11 +101,17 @@ namespace StreetScan.Planner
                     {
                         streamSource = new XmlOsmStreamSource(stream);
                     }
-                    routerDb.LoadOsmData(streamSource, Vehicle.Car);
+                    routerDb.LoadOsmData(streamSource, StreetScan.Planner.Profiles.Vehicles.Car());
                 }
             }
 
             // add contraction data if needed.
+            if (!routerDb.SupportProfile(profileName))
+            {
+                Log.Error("Profile not supported: {ProfileName}", 
+                    profileName);
+                return null;
+            }
             var profile = routerDb.GetSupportedProfile(profileName);
             if (!routerDb.HasContractedFor(profile))
             {
