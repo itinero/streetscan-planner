@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,16 +42,15 @@
     <None Update="test.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="belgium.car.shortest.routerdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\..\SharedAssemblyVersion.cs">
       <Link>SharedAssemblyVersion.cs</Link>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\optimization\src\Itinero.Optimization\Itinero.Optimization.csproj" />
   </ItemGroup>
 
 </Project>

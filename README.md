@@ -11,7 +11,7 @@ Documentation is available [here](docs/).
 This tool:
 
 - Loads a routing network from OSM **for Belgium** (extensions for other countries are possible later)
-- Loads a set of locationd from a CSV file.
+- Loads a set of locations from a CSV file.
 - Calculates the best path along the locations:
   - Start location is the first location in the CSV.
   - End location can be anywhere.

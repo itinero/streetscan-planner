@@ -31,6 +31,7 @@ namespace StreetScan.Planner
             if (args == null || args.Length < 1)
             {
                 args = new[] {"test"};
+                args = new[] {"test.csv", "--turn", "120"};
             }
 #endif
 
@@ -49,29 +50,65 @@ namespace StreetScan.Planner
             {
                 args = new[]
                 {
-                    "test.geojson",
+                    "test.csv",
                     "test.gpx"
                 };
                 Log.Information($"Running test using: {args[0]}");
             }
 
-            if (!string.IsNullOrEmpty(args[0]))
-            { // check if the input exists.
-                if (!File.Exists(args[0]))
+            // if (!string.IsNullOrEmpty(args[0]))
+            // { // check if the input exists.
+            //     if (!File.Exists(args[0]))
+            //     {
+            //         Log.Fatal($"Input file not found: {args[0]}");
+            //         ShowHelp();
+            //         return;
+            //     }
+            //
+            //     if (args.Length == 1)
+            //     {
+            //         args = new[]
+            //         {
+            //             args[0],
+            //             args[0] + ".gpx"
+            //         };
+            //         Log.Warning($"No second argument found, using output: {args[1]}");
+            //     }
+            // }
+            
+            // parse arguments.
+            var inputFile = args[0];
+            var outputFile = inputFile + ".gpx";
+            var i = 1;
+            var turnPenalty = 60;
+            var profileName = "car.shortest";
+            while (i < args.Length)
+            {
+                if (i == 1 &&
+                    !args[i].StartsWith("--"))
                 {
-                    Log.Fatal($"Input file not found: {args[0]}");
-                    ShowHelp();
-                    return;
+                    // we assume this is the output file.
+                    outputFile = args[i];
+                    i++;
+                    continue;
                 }
-
-                if (args.Length == 1)
+                
+                // this should be one of the options.
+                if (args[i] == "--turn")
                 {
-                    args = new[]
+                    i++;
+
+                    if (i < args.Length && 
+                        int.TryParse(args[i], out turnPenalty))
                     {
-                        args[0],
-                        args[0] + ".gpx"
-                    };
-                    Log.Information($"No second argument found, using output: {args[1]}");
+                        i++;
+                        Log.Information("Using custom turn penalty: {TurnPenalty}", turnPenalty);
+                    }
+                    else
+                    {
+                        ArgumentParsingFailed("Could not find or parse turn penalty value");
+                        return;
+                    }
                 }
             }
             
@@ -127,34 +164,20 @@ namespace StreetScan.Planner
                 }
             };
             
-            // validate arguments.
-            if (args.Length < 2)
-            {
-                Log.Fatal("At least two arguments expected.");
-                return;
-            }
-
-            var inputFile = args[0];
             if (!File.Exists(inputFile))
             {
-                Log.Fatal($"Input file {inputFile} not found!");
+                Log.Fatal("Input file {InputFile} not found!", inputFile);
                 return;
             }
 
-            var outputPath = new FileInfo(args[1]).DirectoryName;
+            var outputPath = new FileInfo(outputFile).DirectoryName;
             if (!Directory.Exists(outputPath))
             {
-                Log.Fatal($"Output path {outputPath} not found!");
+                Log.Fatal("Output path {OutputPath} not found!", outputPath);
                 return;
             }
 
-            var profileName = "car.shortest";
-            if (args.Length >= 3 &&
-                args[2] == "fastest")
-            { // apply fastest only on request.
-                profileName = "car";
-            }
-            Log.Information($"Using profile '{profileName}'");
+            Log.Information("Using profile '{ProfileName}'", profileName);
             
             // read the locations.
             Coordinate[] locations;
@@ -181,10 +204,10 @@ namespace StreetScan.Planner
             
             // run the optimization.
             var profile = routerDb.GetSupportedProfile(profileName);
-            var route = optimizer.Optimize(profile.FullName, locations, out _, 0, 0, turnPenalty: 60);
+            var route = optimizer.Optimize(profile.FullName, locations, out _, 0, 0, turnPenalty: turnPenalty);
             if (route.IsError)
             {
-                Log.Fatal("Calculating route failed {@errorMessage}", route.ErrorMessage);
+                Log.Fatal("Calculating route failed {ErrorMessage}", route.ErrorMessage);
                 return;
             }
             File.WriteAllText(args[1] + ".geojson", route.Value.ToGeoJson());
@@ -203,22 +226,24 @@ namespace StreetScan.Planner
             
             // convert to GPX.
             var features = route.Value.ToFeatureCollection();
-            using (var stream = File.Open(args[1], FileMode.Create))
-            {
-                var writerSettings = new XmlWriterSettings { Encoding = Encoding.UTF8, CloseOutput = true };
-                using (var wr = XmlWriter.Create(stream, writerSettings))
-                {
-                    GpxWriter.Write(wr, null, new GpxMetadata("StreetScan"), features.Features, null);
-                }
-            }
+            using var stream = File.Open(args[1], FileMode.Create);
+            var writerSettings = new XmlWriterSettings { Encoding = Encoding.UTF8, CloseOutput = true };
+            using var wr = XmlWriter.Create(stream, writerSettings);
+            GpxWriter.Write(wr, null, new GpxMetadata("StreetScan"), features.Features, null);
         }
 
         private static void ShowHelp()
         {
-            Log.Information($"Usage: arg1 arg2");
-            Log.Information($"- arg1: input.csv");
-            Log.Information($"- arg2: (optional) output.gpx");
+            Log.Information("Usage: arg1 arg2");
+            Log.Information("- arg1: input.csv");
+            Log.Information("- arg2: (optional) output.gpx");
             Log.Information($"Example arguments: {Path.Combine("path", "to", "input.csv")} {Path.Combine("path", "to", "output.gpx")}");
+        }
+
+        private static void ArgumentParsingFailed(string message)
+        {
+            Log.Fatal(message);
+            ShowHelp();
         }
     }
 }
