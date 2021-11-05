@@ -26,10 +26,10 @@ jobs:
     - name: Build all projects.
       run: dotnet build --configuration Release --no-restore
     - name: Publish for OSX
-      run: dotnet publish -c release -r osx-64
+      run: dotnet publish -c release -r osx-x64
       working-directory: ./src/StreetScan.Planner/
     - name: Publish for Windows
-      run: dotnet publish -c release -r win10-64
+      run: dotnet publish -c release -r win-x64
       working-directory: ./src/StreetScan.Planner/
     - name: Publish for Linux
       run: dotnet publish -c release -r linux-64
