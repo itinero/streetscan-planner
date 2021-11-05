@@ -2,7 +2,7 @@ name: Release Build
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ develop, master ]
 
 jobs:
   build-and-test:
