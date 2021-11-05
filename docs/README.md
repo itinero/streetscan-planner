@@ -1,26 +1,7 @@
 StreetScan
 ==========
 
-This is the documentation of the street scan tool.
-
-### Overview
-
-This tool:
-
-- Loads a routing network from OSM **for Belgium** (extensions for other countries are possible later)
-- Loads a set of locationd from a CSV file.
-- Calculates the best path along the locations:
-  - Start location is the first location in the CSV.
-  - End location can be anywhere.
-  - Tries to avoid u-turns where possible.
-
-The result is something like this:
-
-![result](result-wechelderzande.png "Resulting route")
-
-### Manual
-
-This is a cross-platform tools avaible for linux, windows and macos.
+This is a cross-platform tool avaible for linux, windows and macos.
 
 #### Setup
 
@@ -30,7 +11,7 @@ Download the latest release here:
 
 Make sure you choose the correct download for your platform: 
 
-- Windows: `win10-x65`
+- Windows: `win-x65`
 - Linux: `linux-x64`
 - Macos: `osx-64` 
 
@@ -56,7 +37,7 @@ This means that the tool hasn't found a local routing network. It will:
 - Convert it into a routing network.
 - Prepare the network for routing by car.
 
-**This can take up to 20mins** but needs to run only once. After the network has been downloaded and built you should see an `output.gpx` file. That's the result of processing the `test.csv` input file.
+**This can take up to 20mins** but needs to run only once. After the network has been downloaded and built you should see a `test.gpx` file. That's the result of processing the `test.csv` input file.
 
 #### Usage
 
@@ -113,7 +94,23 @@ This will generate two output files:
 
 You can also specify what vehicle profile to use:
 
-- Linux/macos: `.\StreetScan.Planner locations.csv route.gpx fastest`
-- Windows: `\StreetScan.Planner.exe locations.csv route.gpx fastest`
+- Linux/macos: `.\StreetScan.Planner locations.csv route.gpx --profile car`
+- Windows: `\StreetScan.Planner.exe locations.csv route.gpx --profile car`
 
-By default the `shortest` profile will be used, this ignores speed completely. The `fastest` profile takes into account speed and road classifications.
+By default the `car.shortest` profile will be used, this ignores speed completely. The `car` profile takes into account speed and road classifications.
+
+**turn penalties**
+
+There is turn penalty that is used to calculate the cost of turns versus not taking the turns and routing further. This parameter is set to `60` seconds by default but can be tuned as follows:
+
+- Linux/macos: `.\StreetScan.Planner locations.csv route.gpx --turn 120`
+- Windows: `\StreetScan.Planner.exe locations.csv route.gpx --turn 120`
+
+**customize OSM data**
+
+On each run of the tool there will also be an OSM extract written next to the output file. The output OSM file has the same name as the input csv file. Editing that file can be done in JOSM and when rerunning the tool it will use the extract in the output folder instead of the source data directly from OSM.
+
+- Linux/macos: `.\StreetScan.Planner locations.csv route.gpx`
+- Windows: `\StreetScan.Planner.exe locations.csv route.gpx`
+
+=> this will create a file next to route.gpx called `locations.osm`. Edit that file and rerun and the new edited network will be used instead.

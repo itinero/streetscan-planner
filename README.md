@@ -10,7 +10,8 @@ Documentation is available [here](docs/).
 
 This tool:
 
-- Loads a routing network from OSM **for Belgium** (extensions for other countries are possible later)
+- Loads a routing network from OSM **for Belgium** 
+  - Save file with a cutout around the input file locations.
 - Loads a set of locations from a CSV file.
 - Calculates the best path along the locations:
   - Start location is the first location in the CSV.
