@@ -1,6 +1,6 @@
 # streetscan-planner
 
-[![Build status](https://build.anyways.eu/app/rest/builds/buildType:(id:Itinero_Projects_StreetscanPlanner)/statusIcon)](https://build.anyways.eu/viewType.html?buildTypeId=Itinero_Projects_StreetscanPlanner)  
+[![Release Build](https://github.com/itinero/streetscan-planner/actions/workflows/release.yml/badge.svg)](https://github.com/itinero/streetscan-planner/actions/workflows/release.yml)  
 
 This is a small application to optimize routes to drive along all locations in an area. 
 
