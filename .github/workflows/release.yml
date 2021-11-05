@@ -32,5 +32,5 @@ jobs:
       run: dotnet publish -c release -r win-x64
       working-directory: ./src/StreetScan.Planner/
     - name: Publish for Linux
-      run: dotnet publish -c release -r linux-64
+      run: dotnet publish -c release -r linux-x64
       working-directory: ./src/StreetScan.Planner/
